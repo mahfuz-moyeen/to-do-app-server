@@ -24,7 +24,15 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
-        console.log('mongo work');
+        const listsCollection = client.db("to-do-list").collection("lists");
+
+        // add to-do new list or note
+        app.post("/list", async (req, res) => {
+            const data = req.body;
+            const result = await listsCollection.insertOne(data);
+            res.send(result);
+        });
+
 
     }
     finally {
