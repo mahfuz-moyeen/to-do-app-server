@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const app = express();
 
@@ -38,9 +38,18 @@ async function run() {
         // http://localhost:5000/lists
         app.get("/lists", async (req, res) => {
             const query = {};
-            const result = listsCollection.find(query).toArray();
+            const result = await listsCollection.find(query).toArray();
             res.send(result);
         });
+
+        //delete item to lists 
+        // http://localhost:5000/lists/:id
+        app.delete("/list/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await listsCollection.deleteOne(filter);
+            res.send(result);
+          });
 
 
     }
