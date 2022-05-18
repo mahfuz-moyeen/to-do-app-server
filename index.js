@@ -32,7 +32,8 @@ async function run() {
         // get all to-do lists data or notes
         // http://localhost:5000/lists
         app.get("/lists", async (req, res) => {
-            const query = {};
+            const email = req.query.email
+            const query = { email: email };
             const result = await listsCollection.find(query).toArray();
             res.send(result);
         });
