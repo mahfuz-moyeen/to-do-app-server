@@ -43,17 +43,30 @@ async function run() {
         });
 
         //delete item to lists 
-        // http://localhost:5000/lists/:id
+        // http://localhost:5000/list/:id
         app.delete("/list/:id", async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
             const result = await listsCollection.deleteOne(filter);
             res.send(result);
-          });
+        });
 
+        // update notesTaker
+        // http://localhost:5000/list/:id
+        app.put("/list/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    taskComplete: true
+                }
+            }
+            const result = await listsCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        })
 
-    }
-    finally {
+    } finally {
     }
 
 }
