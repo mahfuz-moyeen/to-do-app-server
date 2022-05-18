@@ -27,9 +27,18 @@ async function run() {
         const listsCollection = client.db("to-do-list").collection("lists");
 
         // add to-do new list or note
+        // http://localhost:5000/list
         app.post("/list", async (req, res) => {
             const data = req.body;
             const result = await listsCollection.insertOne(data);
+            res.send(result);
+        });
+
+        // get all to-do lists data or notes
+        // http://localhost:5000/lists
+        app.get("/lists", async (req, res) => {
+            const query = {};
+            const result = listsCollection.find(query).toArray();
             res.send(result);
         });
 
